@@ -1,0 +1,17 @@
+﻿worried?,vaccinated,n
+Very worried,Yes,23
+Somewhat worried,Yes,39
+Not too worried,Yes,27
+Not worried at all,Yes,11
+Very worried,No,8
+Somewhat worried,No,21
+Not too worried,No,30
+Not worried at all,No,41
+Very worried,Not Sure,17
+Somewhat worried,Not Sure,37
+Not too worried,Not Sure,36
+Not worried at all,Not Sure,10
+Very worried,I have already been vaccinated,21
+Somewhat worried,I have already been vaccinated,33
+Not too worried,I have already been vaccinated,33
+Not worried at all,I have already been vaccinated,14

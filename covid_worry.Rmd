@@ -1,0 +1,46 @@
+---
+title: "COVID Worry"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data_acquisition,message=FALSE}
+covid_worry <- read_csv('covid_worry.csv')
+```
+
+```{r data_manipulation}
+chart_data <- covid_worry %>%
+	mutate(worry_fct=factor(`worried?`,levels=c('Very worried','Somewhat worried','Not too worried','Not worried at all'))) %>%
+	mutate(vax_fct=factor(vaccinated,levels=c('Yes','No','Not Sure','I have already been vaccinated')))
+
+
+
+```
+
+```{r recreate_chart,message=FALSE}
+ggplot(chart_data) +
+	geom_col(aes(x=vax_fct,y=n,fill=worry_fct),position='dodge') +
+	labs(x='Get Vaccinated',y='# of Observations',fill='') +
+	theme_bw()
+```
+
+```{r data_manipulation2}
+chart_data2 <- chart_data %>%
+	group_by(vaccinated) %>% mutate(total=sum(n),pct=n/total) %>% ungroup() %>%
+	filter(worry_fct %in% c('Very worried','Somewhat worried')) %>%
+	group_by(vax_fct) %>% summarise(top2box=sum(pct),.groups='drop')
+```
+
+
+```{r recreate_chart2,message=FALSE,fig.height=8,fig.width=12}
+ggplot(chart_data2) +
+	geom_col(aes(x=vax_fct,y=top2box,fill=vax_fct),show.legend=FALSE) +
+	labs(x='Get Vaccinated',y='% Worried') +
+	scale_y_continuous(label=scales::percent) +
+	scale_fill_manual(values=c('#904C77','#091540','#F6F3F5','#F6F3F5')) +
+	theme_bw(base_size=15) +
+	theme(panel.grid.major.x=element_blank())
+```
