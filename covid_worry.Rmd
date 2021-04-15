@@ -1,23 +1,32 @@
 ---
 title: "COVID Worry"
-output: html_document
+output: 
+  html_document: 
+    theme: cosmo
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Data acquisition
+
+Data was extracted manually from the resource listed below.
+
 ```{r data_acquisition,message=FALSE}
 covid_worry <- read_csv('covid_worry.csv')
 ```
 
+## Original Chart
+
+Below is the original chart as seen [here](https://today.yougov.com/topics/politics/articles-reports/2021/04/09/half-vaccine-rejectors-believe-safe-travel-now).
+
 ```{r data_manipulation}
+worry_lvls <- c('Very worried','Somewhat worried','Not too worried','Not worried at all')
+vax_lvls <- c('Yes','No','Not Sure','I have already been vaccinated')
 chart_data <- covid_worry %>%
-	mutate(worry_fct=factor(`worried?`,levels=c('Very worried','Somewhat worried','Not too worried','Not worried at all'))) %>%
-	mutate(vax_fct=factor(vaccinated,levels=c('Yes','No','Not Sure','I have already been vaccinated')))
-
-
-
+	mutate(worry_fct=factor(`worried?`,levels=worry_lvls)) %>%
+	mutate(vax_fct=factor(vaccinated,levels=vax_lvls))
 ```
 
 ```{r recreate_chart,message=FALSE}
@@ -26,6 +35,10 @@ ggplot(chart_data) +
 	labs(x='Get Vaccinated',y='# of Observations',fill='') +
 	theme_bw()
 ```
+
+## Some modifications
+
+Here we want to simplify the chart by changing the metrics shown. We also add formatting to the chart to make it more readable and adjust colors to direct attention to the information we care about.
 
 ```{r data_manipulation2}
 chart_data2 <- chart_data %>%
